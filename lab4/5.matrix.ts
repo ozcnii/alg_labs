@@ -65,7 +65,7 @@ const matrix = [
 ];
 
 zeroMatrix(matrix);
-console.log(matrix);
+console.table(matrix);
 // [
 //   [1, 0, 3],
 //   [0, 0, 0],
