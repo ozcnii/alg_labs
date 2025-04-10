@@ -2,22 +2,6 @@ export class ListNode {
   constructor(public value: number, public next: ListNode | null = null) {}
 }
 
-function removeDuplicates(head: ListNode | null): ListNode | null {
-  let current = head;
-  while (current !== null) {
-    let runner = current;
-    while (runner.next !== null) {
-      if (runner.next.value === current.value) {
-        runner.next = runner.next.next;
-      } else {
-        runner = runner.next;
-      }
-    }
-    current = current.next;
-  }
-  return head;
-}
-
 function sort(head: ListNode | null): ListNode | null {
   if (!head || !head.next) return head;
 
@@ -70,7 +54,7 @@ function heapify(arr: ListNode[], n: number, i: number) {
   }
 }
 
-function removeDuplicates2(head: ListNode | null): ListNode | null {
+function removeDuplicates(head: ListNode | null): ListNode | null {
   head = sort(head);
 
   let current = head;
@@ -82,3 +66,38 @@ function removeDuplicates2(head: ListNode | null): ListNode | null {
   }
   return head;
 }
+
+function createList(values: number[]): ListNode | null {
+  if (values.length === 0) return null;
+
+  const head = new ListNode(values[0]);
+  let current = head;
+
+  for (let i = 1; i < values.length; i++) {
+    current.next = new ListNode(values[i]);
+    current = current.next;
+  }
+
+  return head;
+}
+
+function listToString(head: ListNode | null): string {
+  const values: number[] = [];
+  let current = head;
+
+  while (current !== null) {
+    values.push(current.value);
+    current = current.next;
+  }
+
+  return values.join(" -> ");
+}
+
+const list = createList([4, 2, 1, 3, 2, 5, 4]);
+console.log("Исходный список:");
+console.log(listToString(list));
+
+// Удаляем дубликаты
+const uniqueList = removeDuplicates(list);
+console.log("\nСписок без дубликатов:");
+console.log(listToString(uniqueList));
