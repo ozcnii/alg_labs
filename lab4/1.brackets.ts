@@ -1,7 +1,7 @@
 import { it } from "node:test";
 import assert from "node:assert";
 
-function isValidParentheses(str: string) {
+function isValidBracketsWithoutStack(str: string) {
   let count = 0;
 
   for (const char of str) {
@@ -24,7 +24,7 @@ function isValidBrackets(str: string): boolean {
     "[": "]",
     "(": ")",
   };
-  const stack: (keyof typeof bracketsMap)[] = [];
+  const stack: string[] = [];
   const leftBrackets = Object.keys(bracketsMap);
   const rightBrackets = Object.values(bracketsMap);
 
@@ -36,10 +36,10 @@ function isValidBrackets(str: string): boolean {
 
   for (const char of clearStr) {
     if (leftBrackets.includes(char)) {
-      stack.push(char as keyof typeof bracketsMap);
+      stack.push(char);
       continue;
     }
-
+    // @ts-ignore
     if (bracketsMap[stack.pop()!] !== char) {
       return false;
     }
@@ -48,17 +48,17 @@ function isValidBrackets(str: string): boolean {
   return stack.length === 0;
 }
 
-it("isValidParentheses", () => {
-  assert.equal(isValidParentheses("))((()"), false);
-  assert.equal(isValidParentheses("()"), true);
-  assert.equal(isValidParentheses("()[]"), true);
-  assert.equal(isValidParentheses("(){}"), true);
-  assert.equal(isValidParentheses("(){}[]"), true);
-  assert.equal(isValidParentheses("(()"), false);
-  assert.equal(isValidParentheses("())"), false);
-  assert.equal(isValidParentheses("(([()]))"), true);
-  assert.equal(isValidParentheses("a(b(c[d(e)f]g)1)23"), true);
-  assert.equal(isValidParentheses("(([())])"), true);
+it("isValidBracketsWithoutStack", () => {
+  assert.equal(isValidBracketsWithoutStack("))((()"), false);
+  assert.equal(isValidBracketsWithoutStack("()"), true);
+  assert.equal(isValidBracketsWithoutStack("()[]"), true);
+  assert.equal(isValidBracketsWithoutStack("(){}"), true);
+  assert.equal(isValidBracketsWithoutStack("(){}[]"), true);
+  assert.equal(isValidBracketsWithoutStack("(()"), false);
+  assert.equal(isValidBracketsWithoutStack("())"), false);
+  assert.equal(isValidBracketsWithoutStack("(([()]))"), true);
+  assert.equal(isValidBracketsWithoutStack("a(b(c[d(e)f]g)1)23"), true);
+  assert.equal(isValidBracketsWithoutStack("(([())])"), true);
 });
 
 it("isValidBrackets", () => {
