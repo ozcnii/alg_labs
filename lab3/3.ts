@@ -97,7 +97,6 @@ const list = createList([4, 2, 1, 3, 2, 5, 4]);
 console.log("Исходный список:");
 console.log(listToString(list));
 
-// Удаляем дубликаты
 const uniqueList = removeDuplicates(list);
 console.log("\nСписок без дубликатов:");
 console.log(listToString(uniqueList));
