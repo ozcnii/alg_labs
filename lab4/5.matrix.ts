@@ -63,6 +63,7 @@ const matrix = [
   [4, 0, 6],
   [7, 8, 9],
 ];
+// 5ая - 2вариант
 
 zeroMatrix(matrix);
 console.table(matrix);

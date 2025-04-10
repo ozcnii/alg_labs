@@ -1,6 +1,7 @@
 export function findDuplicate(numbers: number[]): number {
   const n = numbers.length - 1;
   numbers[n] = -1;
+  //  1 ... n
 
   for (let i = 0; i < n; i++) {
     const index = Math.abs(numbers[i]) - 1;
