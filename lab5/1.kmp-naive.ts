@@ -68,7 +68,14 @@ function kmpSearch(text: string, pattern: string): number[] {
   return occurrences;
 }
 
-function runRepeatedPatternTests() {
+function generateRandomString(length: number, chars: string): string {
+  return Array.from(
+    { length },
+    () => chars[Math.floor(Math.random() * chars.length)]
+  ).join("");
+}
+
+function runPerformanceTests() {
   const testCases = [
     {
       name: "Частые короткие повторения",
@@ -90,30 +97,53 @@ function runRepeatedPatternTests() {
       text: "ABCE ABCR ABCO ABCP ABCW ABCK ABCN".repeat(500_000) + "ABCD",
       pattern: "ABCD",
     },
+    {
+      name: "Худший случай для наивного",
+      text: "A".repeat(100_000),
+      pattern: "A".repeat(10_000) + "B",
+    },
+    {
+      name: "Короткий текст",
+      text: "hello world".repeat(100),
+      pattern: "world",
+    },
+    {
+      name: "Шаблон не найден",
+      text: "A".repeat(1_000_000),
+      pattern: "B",
+    },
+    {
+      name: "Случайный текст",
+      text: generateRandomString(1_000_000, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+      pattern: generateRandomString(10_000, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+    },
   ];
 
-  testCases.forEach(({ name, text, pattern }) => {
-    console.log(`\n${name}`);
+  console.log(
+    "=== Сравнение производительности KMP и наивного алгоритма ===\n"
+  );
+  testCases.forEach(({ name, text, pattern }, index) => {
+    console.log(`Тест ${index + 1}: ${name}`);
     console.log(
       `Длина текста: ${(text.length / 1_000_000).toFixed(1)} млн символов`
     );
+    console.log(`Длина шаблона: ${pattern.length} символов`);
 
     // Наивный алгоритм
     const startNaive = performance.now();
     const naiveResult = naiveSearch(text, pattern);
     const naiveTime = performance.now() - startNaive;
 
-    // KMP
+    // Kvenir алгоритм
     const startKMP = performance.now();
     const kmpResult = kmpSearch(text, pattern);
     const kmpTime = performance.now() - startKMP;
 
-    console.log(
-      `Наивный: ${naiveTime.toFixed(2)} мс (найдено: ${naiveResult.length})`
-    );
-    console.log(`KMP: ${kmpTime.toFixed(2)} мс (найдено: ${kmpResult.length})`);
+    console.log(`Наивный: ${naiveTime.toFixed(2)} мс`);
+    console.log(`KMP: ${kmpTime.toFixed(2)} мс`);
     console.log(`KMP быстрее в ${(naiveTime / kmpTime).toFixed(1)} раз`);
+    console.log("");
   });
 }
 
-runRepeatedPatternTests();
+runPerformanceTests();
