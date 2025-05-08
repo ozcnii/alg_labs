@@ -1,31 +1,44 @@
-export function allPalindromicSubstrings(s: string): string[] {
-  const result: string[] = [];
-  const n = s.length;
+function manacher(s: string): number[] {
+  const t = "#" + s.split("").join("#") + "#";
+  const n = t.length;
+  const p = new Array(n).fill(0);
 
-  for (let center = 0; center < n; center++) {
-    // Нечётные палиндромы
-    let l = center;
-    let r = center;
-    while (l >= 0 && r < n && s[l] === s[r]) {
-      result.push(s.slice(l, r + 1));
-      l--;
-      r++;
+  let center: number = 0;
+  let right: number = 0;
+
+  for (let i = 0; i < n; i++) {
+    if (i < right) {
+      p[i] = Math.min(right - i, p[2 * center - i]);
     }
 
-    // Чётные палиндромы
-    l = center;
-    r = center + 1;
-    while (l >= 0 && r < n && s[l] === s[r]) {
-      result.push(s.slice(l, r + 1));
-      l--;
-      r++;
+    let left: number = i - (p[i] + 1);
+    let rightBound: number = i + (p[i] + 1);
+
+    while (left >= 0 && rightBound < n && t[left] === t[rightBound]) {
+      p[i]++;
+      left--;
+      rightBound++;
+    }
+
+    if (i + p[i] > right) {
+      center = i;
+      right = i + p[i];
     }
   }
 
-  return result;
+  return p;
 }
 
-// a  b  a  b  a  d
-const sample = "ababad";
-const palindromes = allPalindromicSubstrings(sample);
-console.log(`Палиндромные подстроки в '${sample}':`, palindromes);
+function countPalindromes(s: string): number {
+  const p: number[] = manacher(s);
+  let count: number = 0;
+
+  for (let i = 0; i < p.length; i++) {
+    count += Math.floor(p[i] / 2) + (p[i] % 2);
+  }
+
+  return count;
+}
+
+const str: string = "ababad";
+console.log(countPalindromes(str));
