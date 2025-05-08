@@ -1,6 +1,6 @@
 function detectCycleDirected(adjList: Map<number, number[]>): boolean {
-  // 0 - не посещена, 1 - в обработке, 2 - обработана
-  const color = new Map<number, 0 | 1 | 2>();
+  // 1 - в обработке, 2 - обработана
+  const color = new Map<number, 1 | 2>();
 
   function dfs(node: number): boolean {
     const currentColor = color.get(node);
