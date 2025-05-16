@@ -41,4 +41,4 @@ function countPalindromes(s: string): number {
 }
 
 const str: string = "ababad";
-console.log(countPalindromes(str));
+console.log("Количество палиндромов:", countPalindromes(str));
